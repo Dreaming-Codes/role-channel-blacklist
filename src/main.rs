@@ -269,10 +269,14 @@ async fn add_role_to_blacklist(
 
     // Check if already blacklisted
     if ctx.data().is_blacklisted(channel_id, role_id).await {
-        ctx.say(format!(
-            "⚠️ Role **{}** is already blacklisted in this channel.",
-            role.name
-        ))
+        ctx.send(
+            poise::CreateReply::default()
+                .content(format!(
+                    "⚠️ Role **{}** is already blacklisted in this channel.",
+                    role.name
+                ))
+                .ephemeral(true),
+        )
         .await?;
         return Ok(());
     }
@@ -293,7 +297,12 @@ async fn add_role_to_blacklist(
         )
     };
 
-    ctx.say(message).await?;
+    ctx.send(
+        poise::CreateReply::default()
+            .content(message)
+            .ephemeral(true),
+    )
+    .await?;
     Ok(())
 }
 
@@ -308,10 +317,14 @@ async fn remove_role_from_blacklist(
 
     // Check if blacklisted
     if !ctx.data().is_blacklisted(channel_id, role_id).await {
-        ctx.say(format!(
-            "⚠️ Role **{}** is not blacklisted in this channel.",
-            role.name
-        ))
+        ctx.send(
+            poise::CreateReply::default()
+                .content(format!(
+                    "⚠️ Role **{}** is not blacklisted in this channel.",
+                    role.name
+                ))
+                .ephemeral(true),
+        )
         .await?;
         return Ok(());
     }
@@ -320,10 +333,14 @@ async fn remove_role_from_blacklist(
         .remove_blacklist_entry(channel_id, role_id)
         .await?;
 
-    ctx.say(format!(
-        "✅ Role **{}** has been removed from the blacklist for this channel.",
-        role.name
-    ))
+    ctx.send(
+        poise::CreateReply::default()
+            .content(format!(
+                "✅ Role **{}** has been removed from the blacklist for this channel.",
+                role.name
+            ))
+            .ephemeral(true),
+    )
     .await?;
     Ok(())
 }
@@ -339,21 +356,29 @@ async fn add_exception_role(
 
     // Check if already an exception
     if ctx.data().is_exception(channel_id, role_id).await {
-        ctx.say(format!(
-            "⚠️ Role **{}** is already an exception role in this channel.",
-            role.name
-        ))
+        ctx.send(
+            poise::CreateReply::default()
+                .content(format!(
+                    "⚠️ Role **{}** is already an exception role in this channel.",
+                    role.name
+                ))
+                .ephemeral(true),
+        )
         .await?;
         return Ok(());
     }
 
     ctx.data().add_exception_entry(channel_id, role_id).await?;
 
-    ctx.say(format!(
-        "✅ Role **{}** has been added as an exception role for this channel.\n\
-        Users with this role can write even if they have blacklisted roles.",
-        role.name
-    ))
+    ctx.send(
+        poise::CreateReply::default()
+            .content(format!(
+                "✅ Role **{}** has been added as an exception role for this channel.\n\
+                Users with this role can write even if they have blacklisted roles.",
+                role.name
+            ))
+            .ephemeral(true),
+    )
     .await?;
     Ok(())
 }
@@ -369,10 +394,14 @@ async fn remove_exception_role(
 
     // Check if is an exception
     if !ctx.data().is_exception(channel_id, role_id).await {
-        ctx.say(format!(
-            "⚠️ Role **{}** is not an exception role in this channel.",
-            role.name
-        ))
+        ctx.send(
+            poise::CreateReply::default()
+                .content(format!(
+                    "⚠️ Role **{}** is not an exception role in this channel.",
+                    role.name
+                ))
+                .ephemeral(true),
+        )
         .await?;
         return Ok(());
     }
@@ -381,10 +410,14 @@ async fn remove_exception_role(
         .remove_exception_entry(channel_id, role_id)
         .await?;
 
-    ctx.say(format!(
-        "✅ Role **{}** has been removed from exception roles for this channel.",
-        role.name
-    ))
+    ctx.send(
+        poise::CreateReply::default()
+            .content(format!(
+                "✅ Role **{}** has been removed from exception roles for this channel.",
+                role.name
+            ))
+            .ephemeral(true),
+    )
     .await?;
     Ok(())
 }
@@ -440,7 +473,12 @@ async fn list_blacklisted_roles(ctx: Context<'_>) -> Result<(), Error> {
         response.push_str("✅ **No exception roles**\n");
     }
 
-    ctx.say(response).await?;
+    ctx.send(
+        poise::CreateReply::default()
+            .content(response)
+            .ephemeral(true),
+    )
+    .await?;
     Ok(())
 }
 
