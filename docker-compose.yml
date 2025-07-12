@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: role_blacklist_db
+    environment:
+      POSTGRES_USER: blacklist_user
+      POSTGRES_PASSWORD: blacklist_pass
+      POSTGRES_DB: role_blacklist
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blacklist_user -d role_blacklist"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  bot:
+    build: .
+    container_name: role_blacklist_bot
+    environment:
+      - DATABASE_URL=postgresql://blacklist_user:blacklist_pass@postgres:5432/role_blacklist
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

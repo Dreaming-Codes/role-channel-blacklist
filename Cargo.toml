@@ -1,0 +1,18 @@
+[package]
+name = "role-channel-blacklist"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+poise = "0.6.1"
+tokio = { version = "1.46.1", features = ["full"] }
+diesel = { version = "2.2", features = ["postgres", "r2d2"] }
+diesel-async = { version = "0.6", features = [
+    "postgres",
+    "bb8",
+    "async-connection-wrapper",
+] }
+dotenv = "0.15"
+serde = { version = "1.0", features = ["derive"] }
+bb8 = "0.9"
+diesel_migrations = { version = "2.2.0", features = ["postgres"] }

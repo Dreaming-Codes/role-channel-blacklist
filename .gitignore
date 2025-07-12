@@ -1,0 +1,33 @@
+# Rust build artifacts
+/target/
+Cargo.lock
+
+# Database files
+/data/
+*.db
+*.tonbo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*.temp
